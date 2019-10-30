@@ -1,107 +1,196 @@
 import React from "react";
+import { Carousel } from "react-bootstrap";
 
 const home = () => {
-	return (
-		<div>
-			<header className="masthead text-center text-white">
-				<div className="masthead-content">
-					<div className="container">
-						<h1 className="masthead-heading mb-0">One Page Wonder</h1>
-						<h2 className="masthead-subheading mb-0">
-							Will Rock Your Socks Off
-						</h2>
-						<a href="#" className="btn btn-primary btn-xl rounded-pill mt-5">
-							Learn More
-						</a>
-					</div>
-				</div>
-				<div className="bg-circle-1 bg-circle"></div>
-				<div className="bg-circle-2 bg-circle"></div>
-				<div className="bg-circle-3 bg-circle"></div>
-				<div className="bg-circle-4 bg-circle"></div>
-			</header>
-			<section>
-				<div className="container">
-					<div className="row align-items-center">
-						<div className="col-lg-6 order-lg-2">
-							<div className="p-5">
-								<img
-									className="img-fluid rounded-circle"
-									src="img/01.jpg"
-									alt=""
-								></img>
-							</div>
-						</div>
-						<div className="col-lg-6 order-lg-1">
-							<div className="p-5">
-								<h2 className="display-4">For those about to rock...</h2>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-									aliquid, mollitia odio veniam sit iste esse assumenda amet
-									aperiam exercitationem, ea animi blanditiis recusandae!
-									Ratione voluptatum molestiae adipisci, beatae obcaecati.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+  return (
+    <div>
+      <header className="backg">
+        <div className="container d-flex h-100 align-items-center">
+          <div className="mx-auto text-center">
+            <span>Lorem Ipsum</span>
+            <h1 className="mx-auto my-0 text-uppercase">
+              Lorem Ipsum Lorem Ipsum Lorem Ipsum
+            </h1>
+            <br></br>
+            <a
+              href="#"
+              class="btn btn-danger"
+              data-toggle="modal"
+              data-target="#SignUp"
+            >
+              Donate Now
+            </a>
+          </div>
+        </div>
+      </header>
 
-			<section>
-				<div className="container">
-					<div className="row align-items-center">
-						<div className="col-lg-6">
-							<div className="p-5">
-								<img
-									className="img-fluid rounded-circle"
-									src="img/02.jpg"
-									alt=""
-								></img>
-							</div>
-						</div>
-						<div className="col-lg-6">
-							<div className="p-5">
-								<h2 className="display-4">We salute you!</h2>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-									aliquid, mollitia odio veniam sit iste esse assumenda amet
-									aperiam exercitationem, ea animi blanditiis recusandae!
-									Ratione voluptatum molestiae adipisci, beatae obcaecati.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+      <section className="content" id="content">
+        <div className="container">
+          <div className="section-head justify-content-center text-center row">
+            <div className="col-12 col-md-10 mb50">
+              <h1 style={{ marginBottom: "15px" }}>
+                Easy Access and Transaction
+              </h1>
+              <p>
+                With connections from multiple hospitals, LGU's and NGO's, we
+                can provide you information on what blood type is available
+                anytime of the day.
+              </p>
+            </div>
+          </div>
+        </div>
+        <br></br>
 
-			<section>
-				<div className="container">
-					<div className="row align-items-center">
-						<div className="col-lg-6 order-lg-2">
-							<div className="p-5">
-								<img
-									className="img-fluid rounded-circle"
-									src="img/03.jpg"
-									alt=""
-								></img>
-							</div>
-						</div>
-						<div className="col-lg-6 order-lg-1">
-							<div className="p-5">
-								<h2 className="display-4">Let there be rock!</h2>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-									aliquid, mollitia odio veniam sit iste esse assumenda amet
-									aperiam exercitationem, ea animi blanditiis recusandae!
-									Ratione voluptatum molestiae adipisci, beatae obcaecati.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	);
+        <div className="container-fluid">
+          <div className="row">
+            <div class="col-lg-4 justify-content-center text-center">
+              <img
+                src={require("../img/blood-donation.png")}
+                style={{
+                  height: "300px;",
+                  width: "250px",
+                  margin: "60px 0px 40px 0px"
+                }}
+              ></img>
+              <h3 className="name-links">Donor</h3>
+              <p className="name-info">
+                Time to donate another blood? Worry it would just be banked and
+                used later? We got you. With our partner hospitals and
+                organizations. You can donate immediately to those who readily
+                need it, and we'll notify you too!
+              </p>
+            </div>
+
+            <div className="col-lg-4 justify-content-center text-center">
+              <img
+                class="receipt"
+                src={require("../img/idle.png")}
+                style={{
+                  height: "350px",
+                  width: "200px",
+                  margin: "0px 80px 0px 100px"
+                }}
+              ></img>
+              <h3 className="name-links">Receiptients</h3>
+              <p className="name-info">
+                Save yourself or your family on going from different hospitals,
+                or appealing on social media and on radion stations to check,
+                and ask for donors.
+              </p>
+            </div>
+
+            <div class="col-lg-4 justify-content-center text-center">
+              <img
+                src={require("../img/hospital.png")}
+                style={{
+                  height: "300px",
+                  width: "300px",
+                  margin: "50px 0px 0px 0px"
+                }}
+              ></img>
+              <h3 className="name-links">Hospital / Organization</h3>
+              <p className="name-info">
+                Requesting for blood is as hard for an individual. Include the
+                disgust of patients to not have adequate supply of blood at
+                crucial times. Worry not we can give you if not constant stream
+                of donators everyday!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="content" id="content1">
+        <div className="container">
+          <div className="row car">
+            <div
+              className="col-md-4 justify-content-center mx-auto"
+              style={{ margin: "220px 0px 250px 0px" }}
+            >
+              <h2>Convenient</h2>
+              <p>
+                Offers donors and patients real-time locations of blood drives,
+                hospitals, and clinics in where they can donate or look for
+                specific blood.
+              </p>
+            </div>
+            <div className="col-md-8 mx-auto">
+              <Carousel id="carousel">
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src={require("../img/1.jpg")}
+                    alt="First slide"
+                    style={{ width: "1000px", marginTop: "100px" }}
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src={require("../img/2.jpg")}
+                    alt="Second slide"
+                    style={{ width: "1000px", marginTop: "100px" }}
+                  />
+                </Carousel.Item>
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src={require("../img/3.jpg")}
+                    alt="Third slide"
+                    style={{ width: "1000px", marginTop: "100px" }}
+                  />
+                </Carousel.Item>
+              </Carousel>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="content more-content" id="content2">
+        <div className="container">
+          <div className="row justify-content-center no-gutters">
+            <div className="col-lg-6">
+              <img className="img-fluid" src={require("../img/bill.jpg")}></img>
+            </div>
+            <div className="col-lg-6 order-lg-first">
+              <div className=" text-center h-100 project">
+                <div className="d-flex h-100">
+                  <div className="project-text w-100 my-auto text-center text-lg-right">
+                    <h4 className="text-black">Point Sytem</h4>
+                    <p className="mb-0 text-black-50 m-content-p">
+                      Gain points everytime you donate where your accumulated
+                      points can be traded for discounts in medical facilities.
+                    </p>
+                    <hr className="d-lg-block line mr-0"></hr>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row justify-content-center no-gutters mb-5 mb-lg-0">
+            <div className="col-lg-6">
+              <img className="img-fluid" src={require("../img/bd.jpg")}></img>
+            </div>
+            <div className="col-lg-6">
+              <div className="text-center h-100 project">
+                <div className="d-flex h-100">
+                  <div className="project-text w-100 my-auto text-center text-lg-left">
+                    <h4 className="text-black">Hassle Free</h4>
+                    <p className="mb-0 text-black-50 m-content-p">
+                      Checking for available blood on blood banks or on
+                      hospitals have never been easier. You are just one tap
+                      away from saving people! Most of all, lesser paperworks.
+                    </p>
+                    <hr className="d-lg-block line ml-0"></hr>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default home;
