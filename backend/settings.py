@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # project apps
+    'backend.users',
+
+    # third-party apps
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +86,18 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'impact_db',
+        'USER': 'impact',
+        'PASSWORD': 'GenericPassword54321',
+        'HOST': '',
+        'PORT': ''
+    }
+}
+
+AUTH_USER_MODEL = 'users.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -118,3 +136,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# project conventions
+MAX_LENGTH_NAME = 30
+MAX_LENGTH_CONTACT_NUMBER = 15
+MAX_LENGTH_USERNAME = 20
+MAX_LENGTH_PASSWORD = 30
