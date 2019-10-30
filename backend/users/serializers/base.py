@@ -15,14 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        validators=[UniqueValidator(queryset=models.User.objects.all())],
-        max_length=settings.MAX_LENGTH_USERNAME,
-        read_only=True
-    )
     profile_picture = Base64ImageField(required=False)
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=models.User.objects.all())],
+        validators=[UniqueValidator(queryset=models.Customer.objects.all())],
         required=False
     )
     user_id = serializers.CharField(
@@ -30,12 +25,14 @@ class CustomerSerializer(serializers.ModelSerializer):
         source='user.id',
         read_only=True
     )
+    points = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = models.Customer
         fields = (
-            'id', 'username', 'user_id', 'profile_picture', 'email', 'contact_number', 'gender',
-            'first_name', 'middle_name', 'last_name', 'blood_type', 'is_verified'
+            'id', 'user_id', 'profile_picture', 'email', 'contact_number', 'gender',
+            'first_name', 'middle_name', 'last_name', 'blood_type', 'is_verified',
+            'points'
         )
 
     def validate(self, attrs):
@@ -98,3 +95,19 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = models.Appointment
         fields = ('id', 'appointment_datetime', 'medical_institution_id',
                   'donor_id', 'is_willing_for_transfusion')
+
+
+class EventSerializer(serializers.ModelSerializer):
+    event_datetime = serializers.DateTimeField(
+        format=globals.DATETIME_FORMAT,
+        input_formats=(globals.DATETIME_FORMAT,)
+    )
+    medical_institution_id = serializers.PrimaryKeyRelatedField(
+        queryset=models.MedicalInstitution.objects.all(),
+        source='medical_institution'
+    )
+
+    class Meta:
+        model = models.Event
+        fields = ('id', 'name', 'location', 'event_datetime',
+                  'contact_number', 'description', 'medical_institution_id')
