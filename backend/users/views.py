@@ -1,14 +1,13 @@
+from django.db import transaction
+
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from backend.users import models, serializers
+from backend.users import models, serializers, choices
 
 
 class UserViewSet(mixins.ListModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.RetrieveModelMixin,
-                  mixins.DestroyModelMixin,
                   viewsets.GenericViewSet):
 
     queryset = models.User.objects.all()
@@ -16,7 +15,8 @@ class UserViewSet(mixins.ListModelMixin,
 
     @action(methods=['POST'], detail=False)
     def signup(self, request):
-        serializer = serializers.request.UserSignUpSerializer(data=request.data)
+        serializer = serializers.request.CustomerSignupSerializer(
+            data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -25,10 +25,16 @@ class UserViewSet(mixins.ListModelMixin,
         password = serializer.validated_data.pop('password')
         serializer.validated_data.pop('confirm_password')
 
-        user = models.User.objects.create_user(username, password, **serializer.validated_data)
+        user = models.User.objects.create_user(
+            username, password)
+        user.user_type = choices.CUSTOMER
+        user.save()
+
+        customer = models.Customer.objects.create(
+            user=user, **serializer.validated_data)
 
         return Response(
-            serializers.base.UserSerializer(user).data,
+            serializers.base.CustomerSerializer(customer).data,
             status=status.HTTP_201_CREATED
         )
 
@@ -61,3 +67,75 @@ class UserViewSet(mixins.ListModelMixin,
             serializers.base.UserSerializer(user).data,
             status=status.HTTP_200_OK
         )
+
+
+class CustomerViewSet(mixins.CreateModelMixin,
+                      mixins.ListModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = models.Customer.objects.all()
+    serializer_class = serializers.base.CustomerSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.extended.ExtendedCustomerSerializer
+
+        return super().get_serializer_class()
+
+
+class MedicalInstituteViewSet(mixins.ListModelMixin,
+                              mixins.UpdateModelMixin,
+                              mixins.RetrieveModelMixin,
+                              viewsets.GenericViewSet):
+    queryset = models.MedicalInstitution.objects.all()
+    serializer_class = serializers.base.MedicalInstitutionSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.extended.ExtendedMedicalInstituteSerializer
+
+        return super().get_serializer_class()
+
+
+class DonationRequestViewSet(mixins.ListModelMixin,
+                             mixins.CreateModelMixin,
+                             mixins.RetrieveModelMixin,
+                             viewsets.GenericViewSet):
+    queryset = models.DonationRequest.objects.all()
+    serializer_class = serializers.base.DonationRequestSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.extended.ExtendedDonationRequestSerializer
+
+        return super().get_serializer_class()
+
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        serializer = serializers.request.DonationRequestSerializer(
+            data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        hospital_name = serializer.validated_data.pop('hospital_name')
+
+        try:
+            hospital = models.MedicalInstitution.objects.get(
+                name=hospital_name)
+            donation_request = models.DonationRequest.objects.create(
+                hospital=hospital,
+                **serializer.validated_data
+            )
+        except models.MedicalInstitution.DoesNotExist:
+            created_user = models.User.objects.create_user(
+                hospital_name, 'genericPassword', user_type='MI')
+            created_hospital = models.MedicalInstitution.objects.create(
+                user=created_user, name=hospital_name)
+            donation_request = models.DonationRequest.objects.create(
+                hospital=created_hospital,
+                **serializer.validated_data
+            )
+
+        return Response(serializers.base.DonationRequestSerializer(donation_request).data, status=status.HTTP_201_CREATED)
