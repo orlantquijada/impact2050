@@ -139,3 +139,39 @@ class DonationRequestViewSet(mixins.ListModelMixin,
             )
 
         return Response(serializers.base.DonationRequestSerializer(donation_request).data, status=status.HTTP_201_CREATED)
+
+
+class AppointmentViewSet(mixins.CreateModelMixin,
+                         mixins.ListModelMixin,
+                         mixins.RetrieveModelMixin,
+                         viewsets.GenericViewSet):
+    queryset = models.Appointment.objects
+    serializer_class = serializers.extended.ExtededAppointmentSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.base.AppointmentSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        serializer = serializers.query.AppointmentQuerySerializer(
+            data=self.request.query_params
+        )
+
+        if not serializer.is_valid():
+            return queryset.all()
+
+        medical_institution_id = serializer.validated_data.get(
+            'medical_institution_id', None)
+        if medical_institution_id:
+            queryset = queryset.filter(
+                medical_institution_id=medical_institution_id)
+
+        donor_id = serializer.validated_data.get('donor_id', None)
+        if donor_id:
+            queryset = queryset.filter(donor_id=donor_id)
+
+        return queryset.all()
