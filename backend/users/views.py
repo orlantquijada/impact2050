@@ -51,10 +51,11 @@ class UserViewSet(mixins.ListModelMixin,
         is_authenticated = True
         try:
             user = models.User.objects.get(username=username)
-        except models.User.DoesNotExist:
-            is_authenticated = False
 
-        if not user.check_password(password):
+            if not user.check_password(password):
+                is_authenticated = False
+
+        except models.User.DoesNotExist:
             is_authenticated = False
 
         if not is_authenticated:
@@ -75,11 +76,11 @@ class CustomerViewSet(mixins.CreateModelMixin,
                       mixins.RetrieveModelMixin,
                       viewsets.GenericViewSet):
     queryset = models.Customer.objects.all()
-    serializer_class = serializers.base.CustomerSerializer
+    serializer_class = serializers.extended.ExtendedCustomerSerializer
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return serializers.extended.ExtendedCustomerSerializer
+        if self.action == 'create':
+            return serializers.base.CustomerSerializer
 
         return super().get_serializer_class()
 
@@ -186,7 +187,7 @@ class EventViewSet(mixins.CreateModelMixin,
     serializer_class = serializers.extended.ExtendedEventSerializer
 
     def get_serializer_class(self):
-        if self.acton == 'create':
+        if self.action == 'create':
             return serializers.base.EventSerializer
 
         return super().get_serializer_class()

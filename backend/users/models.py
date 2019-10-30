@@ -52,6 +52,7 @@ class Customer(mixins.ContactMixin):
         null=True, blank=True
     )
     is_verified = models.BooleanField(default=False)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'

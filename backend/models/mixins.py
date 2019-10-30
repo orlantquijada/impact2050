@@ -8,14 +8,14 @@ class TimestampFieldsMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     class Meta:
         abstract = True
 
 
 class ContactMixin(models.Model):
     first_name = models.CharField(max_length=settings.MAX_LENGTH_NAME)
-    middle_name = models.CharField(max_length=settings.MAX_LENGTH_NAME, null=True, blank=True)
+    middle_name = models.CharField(
+        max_length=settings.MAX_LENGTH_NAME, null=True, blank=True)
     last_name = models.CharField(max_length=settings.MAX_LENGTH_NAME)
     email = models.EmailField(unique=True, null=True, blank=True)
     contact_number = models.CharField(
@@ -23,16 +23,15 @@ class ContactMixin(models.Model):
         null=True, blank=True
     )
 
-
     class Meta:
         abstract = True
 
     @property
     def full_name(self):
         return ' '.join([
-          self.first_name,
-          self.middle_name[0].capitalize() if self.middle_name else None,
-          self.last_name
+            self.first_name,
+            self.middle_name[0].capitalize() if self.middle_name else None,
+            self.last_name
         ])
 
 

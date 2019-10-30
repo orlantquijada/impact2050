@@ -25,7 +25,7 @@ class CustomerSignupSerializer(serializers.ModelSerializer):
         max_length=settings.MAX_LENGTH_PASSWORD, write_only=True)
     profile_picture = Base64ImageField(required=False)
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=models.User.objects.all())],
+        validators=[UniqueValidator(queryset=models.Customer.objects.all())],
         required=False
     )
 
