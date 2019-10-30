@@ -209,3 +209,19 @@ footer {
 .modal-title {
 	margin-top: 0.5rem;
 }
+
+/*  for partners */
+
+.title {
+	padding: 20px;
+}
+
+.list-group {
+	max-height: 70vh;
+	max-width: 300px;
+	margin-bottom: 10px;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* for partners */
