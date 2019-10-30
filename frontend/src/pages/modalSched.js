@@ -1,30 +1,45 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
 const ModalSched = props => {
   return (
     <Modal
       {...props}
-      size="lg"
+      size="sm"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Schedule a Donation
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+        <Form>
+          <Form.Group controlId="appointment_datetime">
+            <Form.Label>Appointment Date</Form.Label>
+            <Form.Control placeholder="1234 Main St" required />
+          </Form.Group>
+
+          <Form.Group controlId="medical_institution_id">
+            <Form.Label>Medical Institution</Form.Label>
+            <Form.Control as="select" required>
+              <option value="">Choose...</option>
+              <option value="1">Chong Hua</option>
+              <option value="2">Cebu Doctors</option>
+              <option value="3">Cebu City Medical</option>
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group id="is_willing_for_transfusion">
+            <Form.Check type="checkbox" label="Willing for Transfusion" />
+          </Form.Group>
+
+          <Button variant="danger" type="submit">
+            Submit
+          </Button>
+        </Form>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 };

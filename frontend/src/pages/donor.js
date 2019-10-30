@@ -88,9 +88,9 @@ const Contact = () => {
                 <div className="col-12 col-sm-6">
                   <div className="card mb-3" style={{ height: "24vh" }}>
                     <ListGroup>
-                      <ListGroup.Item>Link 1</ListGroup.Item>
-                      <ListGroup.Item>Link 2</ListGroup.Item>
-                      <ListGroup.Item>This one is a button</ListGroup.Item>
+                      <ListGroup.Item>October 31, 2019</ListGroup.Item>
+                      <ListGroup.Item>December 31, 2019</ListGroup.Item>
+                      <ListGroup.Item>March 31, 2019</ListGroup.Item>
                     </ListGroup>
                   </div>
                   <Button
