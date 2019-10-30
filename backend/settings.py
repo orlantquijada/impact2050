@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
@@ -135,6 +135,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+MEDIA_ROOT = 'media/'
+MEDIA_URL = '/media/'
+
 STATIC_URL = '/static/'
 
 # project conventions
@@ -142,3 +145,4 @@ MAX_LENGTH_NAME = 30
 MAX_LENGTH_CONTACT_NUMBER = 15
 MAX_LENGTH_USERNAME = 20
 MAX_LENGTH_PASSWORD = 30
+MAX_LENGTH_LOCATION = 50

@@ -1,43 +1,48 @@
 from django.conf import settings
+from django.db import transaction
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from drf_extra_fields.fields import Base64ImageField
 
 from backend.users import models
+from backend.users import serializers as users_serializers
 
 
-class UserSignUpSerializer(serializers.Serializer):
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=settings.MAX_LENGTH_USERNAME)
+    password = serializers.CharField(max_length=settings.MAX_LENGTH_PASSWORD)
+
+
+class CustomerSignupSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[UniqueValidator(queryset=models.User.objects.all())],
         max_length=settings.MAX_LENGTH_USERNAME
     )
-    password = serializers.CharField(max_length=settings.MAX_LENGTH_PASSWORD)
-    confirm_password = serializers.CharField(max_length=settings.MAX_LENGTH_PASSWORD)
+    password = serializers.CharField(
+        max_length=settings.MAX_LENGTH_PASSWORD, write_only=True)
+    confirm_password = serializers.CharField(
+        max_length=settings.MAX_LENGTH_PASSWORD, write_only=True)
     profile_picture = Base64ImageField(required=False)
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=models.User.objects.all())],
+        validators=[UniqueValidator(queryset=models.Customer.objects.all())],
         required=False
     )
-    contact_number = serializers.CharField(
-        max_length=settings.MAX_LENGTH_CONTACT_NUMBER,
-        required=False
-    )
-    gender = serializers.CharField(
-        max_length=1,
-        required=False
-    )
-    first_name = serializers.CharField(max_length=settings.MAX_LENGTH_NAME)
-    middle_name = serializers.CharField(max_length=settings.MAX_LENGTH_NAME, required=False)
-    last_name = serializers.CharField(max_length=settings.MAX_LENGTH_NAME)
-    blood_type = serializers.CharField(max_length=3, required=False)
-    is_verified = serializers.BooleanField(default=False)
+
+    class Meta:
+        model = models.Customer
+        fields = (
+            'id', 'username', 'password', 'confirm_password', 'profile_picture', 'email',
+            'contact_number', 'gender', 'first_name', 'middle_name', 'last_name',
+            'blood_type', 'is_verified'
+        )
 
     def validate(self, attrs):
         if attrs['password'] != attrs['confirm_password']:
             raise serializers.ValidationError('Passwords do not match.')
 
-        attrs['first_name'] = ' '.join([fname.capitalize() for fname in attrs['first_name'].split()])
+        attrs['first_name'] = ' '.join(
+            [fname.capitalize() for fname in attrs['first_name'].split()])
         attrs['last_name'] = attrs['last_name'].capitalize()
         middle_name = attrs.get('middle_name', None)
 
@@ -47,6 +52,10 @@ class UserSignUpSerializer(serializers.Serializer):
         return attrs
 
 
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(max_length=settings.MAX_LENGTH_USERNAME)
-    password = serializers.CharField(max_length=settings.MAX_LENGTH_PASSWORD)
+class DonationRequestSerializer(users_serializers.base.DonationRequestSerializer):
+    hospital_name = serializers.CharField(max_length=settings.MAX_LENGTH_NAME)
+
+    class Meta:
+        model = users_serializers.base.DonationRequestSerializer.Meta.model
+        fields = users_serializers.base.DonationRequestSerializer.Meta.fields + \
+            ('hospital_name',)
