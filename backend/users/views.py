@@ -175,3 +175,36 @@ class AppointmentViewSet(mixins.CreateModelMixin,
             queryset = queryset.filter(donor_id=donor_id)
 
         return queryset.all()
+
+
+class EventViewSet(mixins.CreateModelMixin,
+                   mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   viewsets.GenericViewSet):
+    queryset = models.Event.objects
+    serializer_class = serializers.extended.ExtendedEventSerializer
+
+    def get_serializer_class(self):
+        if self.acton == 'create':
+            return serializers.base.EventSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        serializer = serializers.query.EventQuerySerializer(
+            data=self.request.query_params
+        )
+
+        if not serializer.is_valid():
+            return queryset.all()
+
+        medical_institution_id = serializer.validated_data.get(
+            'medical_institution_id', None)
+        if medical_institution_id:
+            queryset = queryset.filter(
+                medical_institution_id=medical_institution_id)
+
+        return queryset.all()

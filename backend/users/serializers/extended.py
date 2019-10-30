@@ -39,3 +39,13 @@ class ExtededAppointmentSerializer(user_serializers.base.AppointmentSerializer):
         model = user_serializers.base.AppointmentSerializer.Meta.model
         fields = user_serializers.base.AppointmentSerializer.Meta.fields + \
             ('medical_institution', 'donor')
+
+
+class ExtendedEventSerializer(user_serializers.base.EventSerializer):
+    medical_institution = user_serializers.base.MedicalInstitutionSerializer(
+        read_only=True)
+
+    class Meta:
+        model = user_serializers.base.EventSerializer.Meta.model
+        fields = user_serializers.base.EventSerializer.Meta.fields + \
+            ('medical_institution',)

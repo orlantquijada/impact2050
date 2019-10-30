@@ -107,3 +107,17 @@ class Appointment(mixins.TimestampFieldsMixin):
         is_willing = 'is willing'
         not_willing = 'not willing'
         return f'{self.appointment_datetime} | {self.medical_institution} | {self.donor} | {is_willing if self.is_willing_for_transfusion else not_willing}'
+
+
+class Event(models.Model):
+    name = models.CharField(max_length=settings.MAX_LENGTH_NAME)
+    location = models.CharField(max_length=settings.MAX_LENGTH_LOCATION)
+    event_datetime = models.DateTimeField()
+    contact_number = models.CharField(
+        max_length=settings.MAX_LENGTH_CONTACT_NUMBER)
+    description = models.TextField()
+    medical_institution = models.ForeignKey(
+        MedicalInstitution, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id} | {self.name} - {self.event_datetime}'

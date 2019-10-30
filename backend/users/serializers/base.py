@@ -98,3 +98,19 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = models.Appointment
         fields = ('id', 'appointment_datetime', 'medical_institution_id',
                   'donor_id', 'is_willing_for_transfusion')
+
+
+class EventSerializer(serializers.ModelSerializer):
+    event_datetime = serializers.DateTimeField(
+        format=globals.DATETIME_FORMAT,
+        input_formats=(globals.DATETIME_FORMAT,)
+    )
+    medical_institution_id = serializers.PrimaryKeyRelatedField(
+        queryset=models.MedicalInstitution.objects.all(),
+        source='medical_institution'
+    )
+
+    class Meta:
+        model = models.Event
+        fields = ('id', 'name', 'location', 'event_datetime',
+                  'contact_number', 'description', 'medical_institution_id')
