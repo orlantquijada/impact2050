@@ -28,3 +28,14 @@ class ExtendedDonationRequestSerializer(user_serializers.base.DonationRequestSer
         model = user_serializers.base.DonationRequestSerializer.Meta.model
         fields = user_serializers.base.DonationRequestSerializer.Meta.fields + \
             ('recipient', 'hospital')
+
+
+class ExtededAppointmentSerializer(user_serializers.base.AppointmentSerializer):
+    medical_institution = user_serializers.base.MedicalInstitutionSerializer(
+        read_only=True)
+    donor = user_serializers.base.CustomerSerializer(read_only=True)
+
+    class Meta:
+        model = user_serializers.base.AppointmentSerializer.Meta.model
+        fields = user_serializers.base.AppointmentSerializer.Meta.fields + \
+            ('medical_institution', 'donor')

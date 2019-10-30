@@ -5,6 +5,7 @@ from drf_extra_fields.fields import Base64ImageField
 from rest_framework.validators import UniqueValidator
 
 from backend.users import models
+from backend.utils import globals
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -77,3 +78,23 @@ class DonationRequestSerializer(serializers.ModelSerializer):
         model = models.DonationRequest
         fields = ('id', 'recipient_id', 'hospital_id',
                   'relation_to_patient', 'blood_type_of_patient', 'is_transfusion')
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    appointment_datetime = serializers.DateTimeField(
+        format=globals.DATETIME_FORMAT,
+        input_formats=(globals.DATETIME_FORMAT,)
+    )
+    medical_institution_id = serializers.PrimaryKeyRelatedField(
+        queryset=models.MedicalInstitution.objects.all(),
+        source='medical_institution'
+    )
+    donor_id = serializers.PrimaryKeyRelatedField(
+        queryset=models.Customer.objects.all(),
+        source='donor'
+    )
+
+    class Meta:
+        model = models.Appointment
+        fields = ('id', 'appointment_datetime', 'medical_institution_id',
+                  'donor_id', 'is_willing_for_transfusion')

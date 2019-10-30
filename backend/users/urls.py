@@ -11,5 +11,6 @@ ROUTER.register('users', views.UserViewSet)
 ROUTER.register('customers', views.CustomerViewSet)
 ROUTER.register('medical-institutions', views.MedicalInstituteViewSet)
 ROUTER.register('donation-requests', views.DonationRequestViewSet)
+ROUTER.register('appointments', views.AppointmentViewSet)
 
 url_patterns = path('', include(ROUTER.urls))

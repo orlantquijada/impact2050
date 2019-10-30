@@ -94,3 +94,16 @@ class DonationRequest(mixins.TimestampFieldsMixin):
 
     def __str__(self):
         return f'{self.id} | {self.recipient} - {self.hospital} - {self.relation_to_patient} - {self.blood_type_of_patient}'
+
+
+class Appointment(mixins.TimestampFieldsMixin):
+    appointment_datetime = models.DateTimeField()
+    medical_institution = models.ForeignKey(
+        MedicalInstitution, on_delete=models.PROTECT)
+    donor = models.ForeignKey(Customer, on_delete=models.PROTECT)
+    is_willing_for_transfusion = models.BooleanField(default=False)
+
+    def __str__(self):
+        is_willing = 'is willing'
+        not_willing = 'not willing'
+        return f'{self.appointment_datetime} | {self.medical_institution} | {self.donor} | {is_willing if self.is_willing_for_transfusion else not_willing}'
