@@ -27,4 +27,37 @@ class UserViewSet(mixins.ListModelMixin,
 
         user = models.User.objects.create_user(username, password, **serializer.validated_data)
 
-        return Response(serializers.base.UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        return Response(
+            serializers.base.UserSerializer(user).data,
+            status=status.HTTP_201_CREATED
+        )
+
+    @action(methods=['POST'], detail=False)
+    def login(self, request):
+        serializer = serializers.request.UserLoginSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        username = serializer.validated_data.pop('username')
+        password = serializer.validated_data.pop('password')
+
+        is_authenticated = True
+        try:
+            user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            is_authenticated = False
+
+        if not user.check_password(password):
+            is_authenticated = False
+
+        if not is_authenticated:
+            return Response(
+                'Username, email, or password is invalid.',
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        return Response(
+            serializers.base.UserSerializer(user).data,
+            status=status.HTTP_200_OK
+        )

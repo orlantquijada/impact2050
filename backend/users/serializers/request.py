@@ -45,3 +45,8 @@ class UserSignUpSerializer(serializers.Serializer):
             attrs['middle_name'] = middle_name.capitalize()
 
         return attrs
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=settings.MAX_LENGTH_USERNAME)
+    password = serializers.CharField(max_length=settings.MAX_LENGTH_PASSWORD)
