@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import DatePicker from "./datePicker";
 
 const ModalSched = props => {
   return (
@@ -18,7 +19,8 @@ const ModalSched = props => {
         <Form>
           <Form.Group controlId="appointment_datetime">
             <Form.Label>Appointment Date</Form.Label>
-            <Form.Control placeholder="1234 Main St" required />
+            <DatePicker />
+            {/* <Form.Control placeholder="12/31/1999" invisible /> */}
           </Form.Group>
 
           <Form.Group controlId="medical_institution_id">
