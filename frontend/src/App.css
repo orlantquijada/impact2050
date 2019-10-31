@@ -228,4 +228,22 @@ footer {
 	-webkit-overflow-scrolling: touch;
 }
 
+.appointments-table {
+	padding: 20px;
+	display: flex;
+	flex-direction: row;
+}
+
+.appointments-table__list {
+	width: 500px;
+}
+
+.button--active ul li {
+	background-color: black;
+}
+
+.event-form {
+	padding: 20px;
+}
+
 /* for partners */
