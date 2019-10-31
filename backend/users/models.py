@@ -98,7 +98,7 @@ class DonationRequest(mixins.TimestampFieldsMixin):
 
 
 class Appointment(mixins.TimestampFieldsMixin):
-    appointment_datetime = models.DateTimeField()
+    appointment_date = models.DateField()
     medical_institution = models.ForeignKey(
         MedicalInstitution, on_delete=models.PROTECT)
     donor = models.ForeignKey(Customer, on_delete=models.PROTECT)
@@ -107,7 +107,7 @@ class Appointment(mixins.TimestampFieldsMixin):
     def __str__(self):
         is_willing = 'is willing'
         not_willing = 'not willing'
-        return f'{self.appointment_datetime} | {self.medical_institution} | {self.donor} | {is_willing if self.is_willing_for_transfusion else not_willing}'
+        return f'{self.appointment_date} | {self.medical_institution} | {self.donor} | {is_willing if self.is_willing_for_transfusion else not_willing}'
 
 
 class Event(models.Model):
@@ -122,3 +122,37 @@ class Event(models.Model):
 
     def __str__(self):
         return f'{self.id} | {self.name} - {self.event_datetime}'
+
+
+class Incentive(models.Model):
+    name = models.CharField(max_length=settings.MAX_LENGTH_NAME)
+    points_required = models.PositiveIntegerField()
+    medical_institution = models.ForeignKey(MedicalInstitution, models.PROTECT)
+
+    def __str__(self):
+        return f'{self.id} | {self.medical_institution} - {self.name} - {self.points_required}'
+
+
+class Donation(models.Model):
+    donor = models.ForeignKey(Customer, models.PROTECT)
+    no_of_blood_bags = models.PositiveIntegerField()
+    medical_institution = models.ForeignKey(MedicalInstitution, models.PROTECT)
+    is_redeemed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.id} | {self.donor} - {self.no_of_blood_bags} - {self.medical_institution}'
+
+    class Meta:
+        default_related_name = 'donations'
+
+
+class RedeemCode(mixins.TimestampFieldsMixin):
+    code = models.CharField(max_length=settings.MAX_LENGTH_CODE)
+    donor = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    is_redeemed = models.BooleanField(default=False)
+    amount = models.PositiveIntegerField()
+
+    def __str__(self):
+        redeemed = 'is redeemed'
+        not_redeemed = 'not redeemed'
+        return f'{self.code} - {self.donor} - {redeemed if self.is_redeemed else not_redeemed}'

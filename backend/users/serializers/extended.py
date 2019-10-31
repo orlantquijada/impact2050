@@ -49,3 +49,33 @@ class ExtendedEventSerializer(user_serializers.base.EventSerializer):
         model = user_serializers.base.EventSerializer.Meta.model
         fields = user_serializers.base.EventSerializer.Meta.fields + \
             ('medical_institution',)
+
+
+class ExtendedIncentiveSerializer(user_serializers.base.IncentiveSerializer):
+    medical_institution = user_serializers.base.MedicalInstitutionSerializer(
+        read_only=True)
+
+    class Meta:
+        model = user_serializers.base.IncentiveSerializer.Meta.model
+        fields = user_serializers.base.IncentiveSerializer.Meta.fields + \
+            ('medical_institution',)
+
+
+class ExtendedDonationSerializer(user_serializers.base.DonationSerializer):
+    medical_institution = user_serializers.base.MedicalInstitutionSerializer(
+        read_only=True)
+    donor = user_serializers.base.CustomerSerializer(read_only=True)
+
+    class Meta:
+        model = user_serializers.base.DonationSerializer.Meta.model
+        fields = user_serializers.base.DonationSerializer.Meta.fields + \
+            ('medical_institution', 'donor')
+
+
+class ExtendedRedeemCodeSerializer(user_serializers.base.RedeemCodeSerializer):
+    donor = user_serializers.base.CustomerSerializer(read_only=True)
+
+    class Meta:
+        model = user_serializers.base.RedeemCodeSerializer.Meta.model
+        fields = user_serializers.base.RedeemCodeSerializer.Meta.fields + \
+            ('donor',)
