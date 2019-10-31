@@ -25,3 +25,10 @@ BLOOD_TYPES = (
     (ABP, ABP),
     (ABN, ABN)
 )
+
+MEDICAL_INSTITUTION = 'MI'
+CUSTOMER = 'CU'
+USER_TYPES = (
+    (MEDICAL_INSTITUTION, 'Medical Institution'),
+    (CUSTOMER, 'Customer')
+)
