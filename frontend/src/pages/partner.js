@@ -12,7 +12,17 @@ class Partner extends React.Component {
 		appointments: [],
 		error: null
 	};
-	get render() {
+
+    getAppointments() {
+        axios
+            .get("127.0.0.1:8000/v1/appointments/", {
+                params: {
+                    medical_institute_id: 1
+                }
+            })
+            .then(response => response.data.)
+    }
+    render() {
 		const { isLoading, appointments, error } = this.state;
 		return (
 			<div>
