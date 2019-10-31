@@ -8,3 +8,11 @@ class AppointmentQuerySerializer(serializers.Serializer):
 
 class EventQuerySerializer(serializers.Serializer):
     medical_institution_id = serializers.IntegerField(required=False)
+
+
+class IncentiveQuerySerializer(serializers.Serializer):
+    medical_institution_id = serializers.IntegerField(required=False)
+
+
+class DonationQuerySerializer(serializers.Serializer):
+    donor_id = serializers.IntegerField(required=False)

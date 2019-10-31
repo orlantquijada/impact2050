@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from backend.users import models, serializers, choices
+from backend.utils.code_generator import code_generator
 
 
 class UserViewSet(mixins.ListModelMixin,
@@ -209,3 +210,107 @@ class EventViewSet(mixins.CreateModelMixin,
                 medical_institution_id=medical_institution_id)
 
         return queryset.all()
+
+
+class IncentiveViewSet(mixins.CreateModelMixin,
+                       mixins.ListModelMixin,
+                       viewsets.GenericViewSet):
+    queryset = models.Incentive.objects
+    serializer_class = serializers.extended.ExtendedIncentiveSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.base.IncentiveSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        serializer = serializers.query.IncentiveQuerySerializer(
+            data=self.request.query_params
+        )
+
+        if not serializer.is_valid():
+            return queryset.all()
+
+        medical_institution_id = serializer.validated_data.get(
+            'medical_institution_id', None)
+        if medical_institution_id:
+            queryset = queryset.filter(
+                medical_institution_id=medical_institution_id)
+
+        return queryset.all()
+
+    @action(methods=['POST'], detail=True, url_path='claim/(?P<donor_id>[0-9]+)')
+    def claim_incentive(self, request, pk, donor_id):
+        try:
+            incentive = models.Incentive.objects.get(pk=pk)
+            donor = models.Customer.objects.get(id=donor_id)
+        except models.Incentive.DoesNotExist and models.Customer.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        req_points = incentive.points_required
+        if req_points <= donor.points:
+            models.RedeemCode.objects.create(
+                code=code_generator(),
+                donor=donor,
+                amount=req_points
+            )
+
+            donor.points -= req_points
+            donor.save()
+
+            return Response(
+                {'status': 'redeemed successfully!'},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class DonationViewSet(mixins.CreateModelMixin,
+                      mixins.ListModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = models.Donation.objects
+    serializer_class = serializers.extended.ExtendedDonationSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return serializers.base.DonationSerializer
+
+        return super().get_serializer_class()
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        serializer = serializers.query.DonationQuerySerializer(
+            data=self.request.query_params
+        )
+
+        if not serializer.is_valid():
+            return queryset.all()
+
+        doner_id = serializer.validated_data.get('doner_id', None)
+        if doner_id:
+            queryset = queryset.filter(doner_id=doner_id)
+
+        return queryset.all()
+
+
+class RedeemCodeViewSet(mixins.ListModelMixin,
+                        viewsets.GenericViewSet):
+    queryset = models.RedeemCode.objects.all()
+    serializer_class = serializers.extended.ExtendedRedeemCodeSerializer
+
+    @action(methods=['POST'], detail=False, url_path='use/(?P<code>[a-zA-Z0-9]+)')
+    def use_redeem_code(self, request, code):
+        try:
+            code = models.RedeemCode.objects.get(code=code, is_redeemed=False)
+        except models.RedeemCode.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        code.is_redeemed = True
+        code.save()
+
+        return Response(status=status.HTTP_226_IM_USED)
