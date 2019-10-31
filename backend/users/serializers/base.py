@@ -90,7 +90,7 @@ class DonationRequestSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    appointment_datetime = serializers.DateField(
+    appointment_date = serializers.DateField(
         format=globals.DATE_FORMAT,
         input_formats=(globals.DATE_FORMAT,)
     )
@@ -105,7 +105,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Appointment
-        fields = ('id', 'appointment_datetime', 'medical_institution_id',
+        fields = ('id', 'appointment_date', 'medical_institution_id',
                   'donor_id', 'is_willing_for_transfusion')
 
 
