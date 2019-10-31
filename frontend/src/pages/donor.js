@@ -6,14 +6,15 @@ import {
   Button,
   InputGroup,
   FormControl,
-  Carousel,
-  Form
+  Carousel
 } from "react-bootstrap";
 import ModalSched from "./modalSched";
 import ModalFind from "./modalFind";
 
 const Contact = () => {
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShowSched, setModalShowS] = React.useState(false);
+  const [modalShowFind, setModalShowF] = React.useState(false);
+
   return (
     <div className="container" style={{ marginTop: "125px" }}>
       <div className="row mb-3">
@@ -127,14 +128,14 @@ const Contact = () => {
                   <Button
                     className="col-12 p-3"
                     variant="outline-danger"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => setModalShowS(true)}
                   >
                     Schedule
                   </Button>
 
                   <ModalSched
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
+                    show={modalShowSched}
+                    onHide={() => setModalShowS(false)}
                   />
                 </div>
               </div>
@@ -174,12 +175,15 @@ const Contact = () => {
               <Button
                 className="col-12 p-3"
                 variant="outline-danger"
-                onClick={() => setModalShow(true)}
+                onClick={() => setModalShowF(true)}
               >
                 <h4>Find Donor</h4>
               </Button>
 
-              <ModalFind show={modalShow} onHide={() => setModalShow(false)} />
+              <ModalFind
+                show={modalShowFind}
+                onHide={() => setModalShowF(false)}
+              />
             </Tab>
           </Tabs>
         </div>
