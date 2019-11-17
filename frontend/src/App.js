@@ -11,20 +11,20 @@ import Navigation from "./pages/header";
 import Footer from "./pages/footer";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <div>
-        <Navigation />
-        <Switch>
-          <Route path="/" component={Home} exact />
-          <Route path="/Donor" component={Donor} />
-          <Route path="/Partner" component={Partner} exact />
-          <Route component={Error} />
-        </Switch>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<div>
+				<Navigation />
+				<Switch>
+					<Route path="/" component={Home} exact />
+					<Route path="/Donor" component={Donor} />
+					<Route path="/Partner" component={Partner} exact />
+					<Route component={Error} />
+				</Switch>
+				<Footer />
+			</div>
+		</BrowserRouter>
+	);
 }
 
 export default App;

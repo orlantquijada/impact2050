@@ -1,15 +1,20 @@
 import React from "react";
-import Nav from "react-bootstrap/Nav";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
+import {
+	Tabs,
+	Tab,
+	ListGroup,
+	Button,
+	InputGroup,
+	FormControl,
+	Carousel
+} from "react-bootstrap";
 import axios from "axios";
 
 class Partner extends React.Component {
 	render() {
 		return (
 			<div>
+				<div className="mt-5"></div>
 				<section className="container py-4">
 					<div className="row height">
 						<div className="col-md-12">
@@ -25,27 +30,37 @@ class Partner extends React.Component {
 										<div class="appointments-table">
 											<div class="appointments-table__list">
 												<ul class="list-group">
-													<li className="list-group-item button--active">
+													<li
+														className="list-group-item button--active"
+														style={{ overflow: "hidden" }}
+													>
 														<a href="#">Jan Dale Amores</a>
 													</li>
 													<li className="list-group-item">
 														<a href="#">Orlan Quijada</a>
 													</li>
 													<li className="list-group-item">
-														<a href="#">Elram Espra</a>
+														<a action href="#2">
+															Elram Espra
+														</a>
 													</li>
 													<li className="list-group-item">
 														<a href="#">Adrian Andrin</a>
 													</li>
 													<li className="list-group-item">
-														<a href="#">Nathan Owen Awit</a>
+														<a action href="#1">
+															Nathan Owen Awit
+														</a>
 													</li>
 												</ul>
 											</div>
 											<div class="appointments-table__profile">
-												<ul>
-													<li>Name: Jan Dale Amores</li>
-												</ul>
+												<div className="card  " style={{ height: "30vh" }}>
+													<div className="card-body" eventKey="#1">
+														<h4 className="card-title">Nathan Owen Awit</h4>
+														<h6>Blood Type: AB+</h6>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
